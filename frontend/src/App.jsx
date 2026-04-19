@@ -14,7 +14,7 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       // Verify token by fetching user data
-      axios.get('http://localhost:5000/api/user', {
+      axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {

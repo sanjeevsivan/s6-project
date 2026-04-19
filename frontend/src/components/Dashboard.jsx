@@ -15,8 +15,8 @@ function Dashboard({ user, onLogout }) {
     try {
       const token = localStorage.getItem('token');
       const [userRes, txRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/user', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('http://localhost:5000/api/transactions', { headers: { Authorization: `Bearer ${token}` } })
+        axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/transactions`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
       setBalance(userRes.data.balance);
       setTransactions(txRes.data);
@@ -53,7 +53,7 @@ function Dashboard({ user, onLogout }) {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/transfer', 
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/transfer`, 
         { receiverUsername: receiver, amount: parseFloat(amount) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
