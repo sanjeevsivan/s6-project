@@ -12,6 +12,11 @@ const JWT_SECRET = 'your_super_secret_jwt_key_for_academic_project';
 app.use(cors());
 app.use(express.json());
 
+// Root Route
+app.get('/', (req, res) => {
+    res.json({ message: 'Digital Payment System API is running!' });
+});
+
 // Authentication Middleware
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -65,25 +70,24 @@ app.post('/api/login', (req, res) => {
         if (err) return res.status(500).json({ error: 'Database error.' });
         if (!user) return res.status(400).json({ error: 'Invalid username or password.' });
 
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (!validPassword) return res.status(400).json({ error: 'Invalid username or password.' });
+        try {
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) return res.status(400).json({ error: 'Invalid username or password.' });
 
-        // Simulate OTP Generation
-        const simulatedOTP = Math.floor(1000 + Math.random() * 9000);
-        console.log(`[SIMULATED OTP for ${username}]: ${simulatedOTP}`);
-        
-        // In a real app, we would save this OTP and wait for user to verify.
-        // For this prototype, we'll bypass actual OTP verification or just return a token immediately,
-        // but let's assume the frontend will pretend to verify it.
-        // We will just generate the JWT token here.
-        
-        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ 
-            message: 'Login successful!', 
-            token, 
-            simulatedOTP, // Sending back so frontend can simulate "receiving" it
-            user: { id: user.id, username: user.username, balance: user.balance } 
-        });
+            // Simulate OTP Generation
+            const simulatedOTP = Math.floor(1000 + Math.random() * 9000);
+            console.log(`[SIMULATED OTP for ${username}]: ${simulatedOTP}`);
+            
+            const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+            res.json({ 
+                message: 'Login successful!', 
+                token, 
+                simulatedOTP,
+                user: { id: user.id, username: user.username, balance: user.balance } 
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Server error during login.' });
+        }
     });
 });
 

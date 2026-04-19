@@ -1,0 +1,14 @@
+{
+  "name": "s6-project",
+  "version": "1.0.0",
+  "description": "Full-stack payment system",
+  "scripts": {
+    "start": "node backend/server.js",
+    "backend": "node backend/server.js",
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"node backend/server.js\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
