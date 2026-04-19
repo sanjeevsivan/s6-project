@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const db = require('./database');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = 'your_super_secret_jwt_key_for_academic_project';
 
 // Middleware
