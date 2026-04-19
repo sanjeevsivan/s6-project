@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: s6-backend
+    name: sanjeev-s6-backend-api
     env: node
     rootDir: backend
     buildCommand: npm install
